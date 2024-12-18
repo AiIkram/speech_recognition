@@ -9,30 +9,36 @@ Original file is located at
 import speech_recognition as sr
 import streamlit as st
 
-def transcribe_speech():
-    # Initialize recognizer class
+def transcribe_speech_from_file(file_path):
+    # Initialize recognizer
     r = sr.Recognizer()
 
-    # Use the microphone as the audio source
-    with sr.Microphone() as source:
-        st.info("Speak now...")
-        audio_text = r.listen(source)
-        st.info("Transcribing...")
+    # Load audio file
+    with sr.AudioFile(file_path) as source:
+        audio = r.record(source)  # Read the entire audio file
 
-        try:
-            # Use Google Speech Recognition
-            text = r.recognize_google(audio_text)
-            return text
-        except Exception as e:
-            return f"Error: {str(e)}"
+    try:
+        # Transcribe using Google Speech Recognition
+        text = r.recognize_google(audio)
+        return text
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 def main():
     st.title("Speech Recognition App")
-    st.write("Click the button below to start speaking:")
+    uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "flac", "mp3"])
+    
+    if uploaded_file is not None:
+        st.info("Processing uploaded audio file...")
+        file_path = f"/tmp/{uploaded_file.name}"
+        
+        # Save uploaded file to temp directory
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
 
-    if st.button("Start Recording"):
-        text = transcribe_speech()
+        text = transcribe_speech_from_file(file_path)
         st.write("Transcription:", text)
 
 if __name__ == "__main__":
     main()
+
