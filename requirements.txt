@@ -1,2 +1,3 @@
 SpeechRecognition
 streamlit
+pyaudio
