@@ -26,7 +26,7 @@ def transcribe_speech_from_file(file_path):
 
 def main():
     st.title("Speech Recognition App")
-    uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "flac", "mp3"])
+    uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "flac", "mp3", "m4a"])
     
     if uploaded_file is not None:
         st.info("Processing uploaded audio file...")
