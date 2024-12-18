@@ -1,4 +1,4 @@
 SpeechRecognition
 streamlit
 PyAudio
-Python=3.12
+
